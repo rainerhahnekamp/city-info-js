@@ -1,0 +1,99 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: City Info
+host: localhost:10010
+consumes:
+  - application/json
+produces:
+  - application/json
+  
+paths:
+  /cities:
+    x-swagger-router-controller: city_info
+    get:
+      operationId: listCities
+      responses:
+        "200":
+          description: list cities
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/City"
+    post:
+      operationId: addCity
+      parameters:
+        - in: body
+          name: city
+          schema:
+            $ref: "#/definitions/NewCity"
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: array
+            items: 
+              $ref: "#/definitions/City"
+  /cities/{cityId}:
+    x-swagger-router-controller: city_info
+    get:
+      operationId: getCity
+      parameters:
+        - name: cityId
+          in: path
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: get city
+          schema:
+            $ref: "#/definitions/CityDetail"
+
+definitions:
+  City:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+        
+  NewCity:
+    properties:
+      name: 
+        type: string
+      population:
+        type: integer
+      area:
+        type: integer
+      
+  
+  CityDetail:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      population:
+        type: integer
+      size:
+        type: number
+        format: float
+      districts:
+        type: array
+        items:
+          $ref: "#/definitions/District"
+    required:
+      - id
+      - name
+      - population
+      - size
+  District:
+    properties:
+      districtNr:
+        type: integer
+      name:
+        type: string
+      population:
+        type: integer
+        format: float
+    
