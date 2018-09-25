@@ -3,11 +3,7 @@ info:
   version: "0.0.1"
   title: City Info
 host: localhost:10010
-consumes:
-  - application/json
-produces:
-  - application/json
-  
+
 paths:
   /cities:
     x-swagger-router-controller: city_info
@@ -15,85 +11,44 @@ paths:
       operationId: listCities
       responses:
         "200":
-          description: list cities
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/City"
+          $ref: "#/responses/Cities"
     post:
       operationId: addCity
       parameters:
         - in: body
           name: city
           schema:
-            $ref: "#/definitions/NewCity"
+            $ref: "#/definitions/City"
       responses:
         "200":
-          description: OK
-          schema:
-            type: array
-            items: 
-              $ref: "#/definitions/City"
-  /cities/{cityId}:
+          $ref: "#/responses/Cities"
+  /cities/{name}:
     x-swagger-router-controller: city_info
-    get:
-      operationId: getCity
+    delete:
+      operationId: deleteCity
       parameters:
-        - name: cityId
+        - name: name
           in: path
-          type: integer
+          type: string
           required: true
       responses:
         "200":
-          description: get city
-          schema:
-            $ref: "#/definitions/CityDetail"
+          $ref: "#/responses/Cities"
+
+responses:
+  Cities:
+    description: OK
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/City"
 
 definitions:
   City:
     properties:
-      id:
-        type: integer
-      name:
-        type: string
-        
-  NewCity:
-    properties:
-      name: 
-        type: string
-      population:
-        type: integer
-      area:
-        type: integer
-      
-  
-  CityDetail:
-    properties:
-      id:
-        type: integer
       name:
         type: string
       population:
         type: integer
       size:
         type: number
-        format: float
-      districts:
-        type: array
-        items:
-          $ref: "#/definitions/District"
-    required:
-      - id
-      - name
-      - population
-      - size
-  District:
-    properties:
-      districtNr:
-        type: integer
-      name:
-        type: string
-      population:
-        type: integer
-        format: float
-    
